@@ -106,8 +106,53 @@
             scene.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnKeyUpTrigger, function (evt) {
                 inputMap[evt.sourceEvent.key] = evt.sourceEvent.type == "keydown";
             }));
-        
-        
+            
+
+            // Meshs      
+            BABYLON.SceneLoader.ImportMesh("", "https://models.babylonjs.com/", "ExplodingBarrel.glb", scene, function (newMeshes) {
+                var barrel = newMeshes[0];
+                barrel.scaling.scaleInPlace(0.01);
+                barrel.position = new BABYLON.Vector3(1, 0, 0);
+            });
+
+            BABYLON.SceneLoader.ImportMesh(null, "https://models.babylonjs.com/vintageDeskFan/", "vintageFan_animated.gltf", scene, function (newMeshes) {          
+                var vintage = newMeshes[0];
+                vintage.scaling.scaleInPlace(0.01);
+                vintage.position = new BABYLON.Vector3(2, 0, 0);        
+            });
+
+            BABYLON.SceneLoader.ImportMesh("", "https://models.babylonjs.com/Channel9/", "Channel9.stl", scene, function (newMeshes) {
+                var channel = newMeshes[0];
+                channel.scaling.scaleInPlace(0.005);
+                channel.position = new BABYLON.Vector3(3, 0, 0);    
+            });
+
+            BABYLON.SceneLoader.ImportMesh("", "https://models.babylonjs.com/", "toast_acrobatics.glb", scene, function (newMeshes) {          
+                var toast = newMeshes[0];
+                toast.scaling.scaleInPlace(1.8);
+                toast.position = new BABYLON.Vector3(4, 0, 0);                     
+            });
+
+            BABYLON.SceneLoader.ImportMesh("", "https://models.babylonjs.com/", "shark.glb", scene, function (newMeshes) {          
+                var shark = newMeshes[0];
+                shark.scaling.scaleInPlace(0.1);
+                shark.position = new BABYLON.Vector3(5, 0, 0);               
+            });
+
+            BABYLON.SceneLoader.ImportMesh("", "https://models.babylonjs.com/", "emoji_heart.glb", scene, function (newMeshes) {          
+                var heart = newMeshes[0];
+                heart.scaling.scaleInPlace(10);
+                heart.position = new BABYLON.Vector3(6, 0, 0);
+            });
+
+            BABYLON.SceneLoader.ImportMesh("", "https://models.babylonjs.com/", "aerobatic_plane.glb", scene, function (newMeshes) {          
+                var plane = newMeshes[0];
+                plane.scaling.scaleInPlace(4);
+                plane.position = new BABYLON.Vector3(7, 0, 0);
+            });
+            // Fim Meshs
+
+
             // Load hero character
             BABYLON.SceneLoader.ImportMesh("", "https://assets.babylonjs.com/meshes/", "HVGirl.glb", scene, function (newMeshes, particleSystems, skeletons, animationGroups) {
                 var hero = newMeshes[0];
