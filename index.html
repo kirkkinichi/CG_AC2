@@ -89,14 +89,16 @@
             advancedTexture.addControl(instructions);
         
             // Ground
-            var ground = BABYLON.MeshBuilder.CreateGround("ground", { height: 50, width: 50, subdivisions: 4 }, scene);
+            var ground = BABYLON.MeshBuilder.CreateDisc("ground", { radius: 20 }, scene);
             var groundMaterial = new BABYLON.StandardMaterial("groundMaterial", scene);
             groundMaterial.diffuseTexture = new BABYLON.Texture("textures/wood.jpg", scene);
+            ground.rotation.x = Math.PI / 2
             groundMaterial.diffuseTexture.uScale = 30;
             groundMaterial.diffuseTexture.vScale = 30;
             groundMaterial.specularColor = new BABYLON.Color3(.1, .1, .1);
             ground.material = groundMaterial;
-        
+            ground.physicsImpostor = new BABYLON.PhysicsImpostor(ground, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 0.9 }, scene);
+            
             // Keyboard events
             var inputMap = {};
             scene.actionManager = new BABYLON.ActionManager(scene);
@@ -237,6 +239,8 @@
                     }
                 });
             });
+            scene.enablePhysics();
+
         
             return scene;
         }
