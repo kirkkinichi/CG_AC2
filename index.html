@@ -89,10 +89,9 @@
             advancedTexture.addControl(instructions);
         
             // Ground
-            var ground = BABYLON.MeshBuilder.CreateDisc("ground", { radius: 20 }, scene);
+            var ground = BABYLON.MeshBuilder.CreateGround("ground", { height: 40, width: 40, subdivisions: 4 }, scene);
             var groundMaterial = new BABYLON.StandardMaterial("groundMaterial", scene);
             groundMaterial.diffuseTexture = new BABYLON.Texture("textures/wood.jpg", scene);
-            ground.rotation.x = Math.PI / 2
             groundMaterial.diffuseTexture.uScale = 30;
             groundMaterial.diffuseTexture.vScale = 30;
             groundMaterial.specularColor = new BABYLON.Color3(.1, .1, .1);
@@ -202,6 +201,11 @@
                     if (inputMap["b"]) {
                         keydown = true;
                     }
+
+                    if (hero.position.x > 19.5) { hero.position.x = 19.5; }
+                    if (hero.position.x < -19.5) { hero.position.x = -19.5; }
+                    if (hero.position.z > 19.5) { hero.position.z = 19.5; }
+                    if (hero.position.z < -19.5) { hero.position.z = -19.5; }
         
                     //Manage animations to be played  
                     if (keydown) {
