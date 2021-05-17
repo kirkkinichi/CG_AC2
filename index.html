@@ -137,7 +137,7 @@
             advancedTexture.addControl(rect1);    
 
             var label1 = new BABYLON.GUI.TextBlock();
-            label1.text = "Menu: \n\n\n\n Para mover o personagem, utilize as teclas W A S D\n\n Objetivo: Pegue todos os objetos na ordem correta, não encoste no barril... \n\n\n\n Aperte a tecla 'M' para abrir o menu. \n Aperte a tecla 'F' para fechar o menu.";
+            label1.text = "Menu: \n\n\n\n Para mover o personagem, utilize as teclas W A S D\n\n Objetivo: Pegue todos os objetos na ordem correta, não encoste nos barris... \n\n\n\n Aperte a tecla 'M' para abrir o menu. \n Aperte a tecla 'F' para fechar o menu.";
             label1.color = "White";
             rect1.addControl(label1);
             
@@ -158,7 +158,38 @@
                     break;
                 }
             });
-            //FIM MENUa
+            // Fim Menu
+
+            var createBarrel = function () {
+                BABYLON.SceneLoader.ImportMesh("", "https://models.babylonjs.com/", "ExplodingBarrel.glb", scene, function (newMeshes) {
+                    var barrel = newMeshes[0];
+                    barrel.scaling.scaleInPlace(0.01);
+                    barrel.position.y = 0;
+                    barrel.position.x = (Math.random() * 20) * ((Math.random() < 0.5) ? -1 : 1); 
+                    barrel.position.z = (Math.random() * 20) * ((Math.random() < 0.5) ? -1 : 1);
+                });
+            }
+
+            for (var ii = 0; ii < 20; ii++) {
+                createBarrel();
+            }
+
+            scene.onPointerUp = function () {
+                scene.meshes.forEach(function (m) {
+                    if (m.name == "s") {
+                        m.applyImpulse(new BABYLON.Vector3(Math.random(), 0, Math.random()).scale((Math.random() < 0.5) ? -15 : 15), m.getAbsolutePosition());
+                    }
+                })
+            }
+
+            scene.registerBeforeRender(function () {
+                scene.meshes.forEach(function (m) {
+                    if (m.name=="s" && m.position.y < 0) {
+                        m.dispose();
+                        createBarrel();
+                    }
+                })
+            });
             
 
             // Load hero character
@@ -166,11 +197,6 @@
                 var hero = newMeshes[0];
 
                 // Meshs
-                BABYLON.SceneLoader.ImportMesh("", "https://models.babylonjs.com/", "ExplodingBarrel.glb", scene, function (newMeshes) {
-                    var barrel = newMeshes[0];
-                    barrel.scaling.scaleInPlace(0.01);
-                    barrel.position = new BABYLON.Vector3(1, 0, 0);
-                });
 
                 BABYLON.SceneLoader.ImportMesh(null, "https://models.babylonjs.com/vintageDeskFan/", "vintageFan_animated.gltf", scene, function (newMeshes) {          
                     var vintage = newMeshes[0];
