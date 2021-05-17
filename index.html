@@ -85,7 +85,7 @@
             // GUI
             var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
             var instructions = new BABYLON.GUI.TextBlock();
-            instructions.text = "Move w/ WASD keys, B for Samba, look with the mouse";
+            instructions.text = "Nome: Kirk Kinichi Tomisaki Rodrigues da Silva - RA: 171277";
             instructions.color = "white";
             instructions.fontSize = 16;
             instructions.textHorizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT
@@ -122,6 +122,43 @@
             scene.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnKeyUpTrigger, function (evt) {
                 inputMap[evt.sourceEvent.key] = evt.sourceEvent.type == "keydown";
             }));
+
+            // Menu
+            var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+
+            var rect1 = new BABYLON.GUI.Rectangle();
+            rect1.width = 1;
+            rect1.height = "500px";
+            rect1.cornerRadius = 20;
+            rect1.color = "Red";
+            rect1.thickness = 4;
+            rect1.background = "Black";
+            rect1.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+            advancedTexture.addControl(rect1);    
+
+            var label1 = new BABYLON.GUI.TextBlock();
+            label1.text = "Menu: \n\n\n\n Para mover o personagem, utilize as teclas W A S D\n\n Objetivo: Pegue todos os objetos na ordem correta, não encoste no barril... \n\n\n\n Aperte a tecla 'M' para abrir o menu. \n Aperte a tecla 'F' para fechar o menu.";
+            label1.color = "White";
+            rect1.addControl(label1);
+            
+
+            scene.onKeyboardObservable.add((kbInfo) => {
+                switch (kbInfo.type) {
+                    case BABYLON.KeyboardEventTypes.KEYDOWN:
+                        switch (kbInfo.event.key) {
+                            case "m":
+                            case "M":
+                            rect1.height = "500px";
+                            break    
+                            case "f":    
+                            case "F":
+                            rect1.height = "0px";
+                            break                             
+                        }
+                    break;
+                }
+            });
+            //FIM MENUa
             
 
             // Load hero character
