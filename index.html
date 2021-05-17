@@ -98,7 +98,7 @@
             largeGroundMat.diffuseTexture = new BABYLON.Texture("https://assets.babylonjs.com/environments/valleygrass.png");            
             const largeGround = BABYLON.MeshBuilder.CreateGroundFromHeightMap("largeGround", "https://assets.babylonjs.com/environments/villageheightmap.png", {width:150, height:150, subdivisions: 20, minHeight:0, maxHeight: 10});
             largeGround.material = largeGroundMat;
-            largeGround.position.y = -10;
+            largeGround.position.y = -0.1;
            
            // Ground Material
             var groundMaterial = new BABYLON.StandardMaterial("groundMaterial", scene);
@@ -137,7 +137,7 @@
             advancedTexture.addControl(rect1);    
 
             var label1 = new BABYLON.GUI.TextBlock();
-            label1.text = "Menu: \n\n\n\n Para mover o personagem, utilize as teclas W A S D\n\n Objetivo: Pegue todos os objetos na ordem correta, não encoste nos barris... \n\n\n\n Aperte a tecla 'M' para abrir o menu. \n Aperte a tecla 'F' para fechar o menu.";
+            label1.text = "Menu: \n\n Para mover o personagem, utilize as teclas W A S D\n Pressione a tecla B para Sambar.\n Utilize o Mouse para olhar em volta.\n\n Objetivo: Pegue todos os Corações (do menor para o maior), não encoste nos barris... \n\n\n\n Aperte a tecla 'M' para abrir o menu. \n Aperte a tecla 'F' para fechar o menu.";
             label1.color = "White";
             rect1.addControl(label1);
             
@@ -160,6 +160,49 @@
             });
             // Fim Menu
 
+            // Meshs
+
+            BABYLON.SceneLoader.ImportMesh(null, "https://models.babylonjs.com/vintageDeskFan/", "vintageFan_animated.gltf", scene, function (newMeshes) {          
+                var vintage = newMeshes[0];
+                vintage.scaling.scaleInPlace(0.01);
+                vintage.position.y = 0;
+                vintage.position.x = (Math.random() * 20) * ((Math.random() < 0.5) ? -1 : 1); 
+                vintage.position.z = (Math.random() * 20) * ((Math.random() < 0.5) ? -1 : 1);                         
+            });
+
+            BABYLON.SceneLoader.ImportMesh("", "https://models.babylonjs.com/Channel9/", "Channel9.stl", scene, function (newMeshes) {
+                var channel = newMeshes[0];
+                channel.scaling.scaleInPlace(0.005);
+                channel.position.y = 0;
+                channel.position.x = (Math.random() * 20) * ((Math.random() < 0.5) ? -1 : 1); 
+                channel.position.z = (Math.random() * 20) * ((Math.random() < 0.5) ? -1 : 1);  
+            });
+
+            BABYLON.SceneLoader.ImportMesh("", "https://models.babylonjs.com/", "toast_acrobatics.glb", scene, function (newMeshes) {          
+                var toast = newMeshes[0];
+                toast.scaling.scaleInPlace(1.8);
+                toast.position.y = 0;
+                toast.position.x = (Math.random() * 20) * ((Math.random() < 0.5) ? -1 : 1); 
+                toast.position.z = (Math.random() * 20) * ((Math.random() < 0.5) ? -1 : 1);                     
+            });
+
+            BABYLON.SceneLoader.ImportMesh("", "https://models.babylonjs.com/", "shark.glb", scene, function (newMeshes) {          
+                var shark = newMeshes[0];
+                shark.scaling.scaleInPlace(0.1);
+                shark.position.y = 0;
+                shark.position.x = (Math.random() * 20) * ((Math.random() < 0.5) ? -1 : 1); 
+                shark.position.z = (Math.random() * 20) * ((Math.random() < 0.5) ? -1 : 1);         
+            });            
+
+            BABYLON.SceneLoader.ImportMesh("", "https://models.babylonjs.com/", "aerobatic_plane.glb", scene, function (newMeshes) {          
+                var plane = newMeshes[0];
+                plane.scaling.scaleInPlace(4);
+                plane.position.y = 0;
+                plane.position.x = (Math.random() * 20) * ((Math.random() < 0.5) ? -1 : 1); 
+                plane.position.z = (Math.random() * 20) * ((Math.random() < 0.5) ? -1 : 1);
+            });
+            
+
             var createBarrel = function () {
                 BABYLON.SceneLoader.ImportMesh("", "https://models.babylonjs.com/", "ExplodingBarrel.glb", scene, function (newMeshes) {
                     var barrel = newMeshes[0];
@@ -170,70 +213,29 @@
                 });
             }
 
+            var createHeart = function (j) {
+                BABYLON.SceneLoader.ImportMesh("", "https://models.babylonjs.com/", "emoji_heart.glb", scene, function (newMeshes) {          
+                    var heart = newMeshes[0];
+                    heart.scaling.scaleInPlace(10*j);
+                    heart.position.y = 0;
+                    heart.position.x = (Math.random() * 20) * ((Math.random() < 0.5) ? -1 : 1); 
+                    heart.position.z = (Math.random() * 20) * ((Math.random() < 0.5) ? -1 : 1);
+                });
+            }
+
             for (var ii = 0; ii < 20; ii++) {
                 createBarrel();
             }
-
-            scene.onPointerUp = function () {
-                scene.meshes.forEach(function (m) {
-                    if (m.name == "s") {
-                        m.applyImpulse(new BABYLON.Vector3(Math.random(), 0, Math.random()).scale((Math.random() < 0.5) ? -15 : 15), m.getAbsolutePosition());
-                    }
-                })
+            for (var j = 0; j < 10; j++) {
+                createHeart(j);
             }
-
-            scene.registerBeforeRender(function () {
-                scene.meshes.forEach(function (m) {
-                    if (m.name=="s" && m.position.y < 0) {
-                        m.dispose();
-                        createBarrel();
-                    }
-                })
-            });
+            // Fim Meshs
             
 
             // Load hero character
             BABYLON.SceneLoader.ImportMesh("", "https://assets.babylonjs.com/meshes/", "HVGirl.glb", scene, function (newMeshes, particleSystems, skeletons, animationGroups) {
                 var hero = newMeshes[0];
 
-                // Meshs
-
-                BABYLON.SceneLoader.ImportMesh(null, "https://models.babylonjs.com/vintageDeskFan/", "vintageFan_animated.gltf", scene, function (newMeshes) {          
-                    var vintage = newMeshes[0];
-                    vintage.scaling.scaleInPlace(0.01);
-                    vintage.position = new BABYLON.Vector3(2, 0, 0);        
-                });
-
-                BABYLON.SceneLoader.ImportMesh("", "https://models.babylonjs.com/Channel9/", "Channel9.stl", scene, function (newMeshes) {
-                    var channel = newMeshes[0];
-                    channel.scaling.scaleInPlace(0.005);
-                    channel.position = new BABYLON.Vector3(3, 0, 0);    
-                });
-
-                BABYLON.SceneLoader.ImportMesh("", "https://models.babylonjs.com/", "toast_acrobatics.glb", scene, function (newMeshes) {          
-                    var toast = newMeshes[0];
-                    toast.scaling.scaleInPlace(1.8);
-                    toast.position = new BABYLON.Vector3(4, 0, 0);                     
-                });
-
-                BABYLON.SceneLoader.ImportMesh("", "https://models.babylonjs.com/", "shark.glb", scene, function (newMeshes) {          
-                    var shark = newMeshes[0];
-                    shark.scaling.scaleInPlace(0.1);
-                    shark.position = new BABYLON.Vector3(5, 0, 0);               
-                });
-
-                BABYLON.SceneLoader.ImportMesh("", "https://models.babylonjs.com/", "emoji_heart.glb", scene, function (newMeshes) {          
-                    var heart = newMeshes[0];
-                    heart.scaling.scaleInPlace(10);
-                    heart.position = new BABYLON.Vector3(6, 0, 0);
-                });
-
-                BABYLON.SceneLoader.ImportMesh("", "https://models.babylonjs.com/", "aerobatic_plane.glb", scene, function (newMeshes) {          
-                    var plane = newMeshes[0];
-                    plane.scaling.scaleInPlace(4);
-                    plane.position = new BABYLON.Vector3(7, 0, 0);
-                });
-                // Fim Meshs
         
                 //Scale the model down        
                 hero.scaling.scaleInPlace(0.1);
